@@ -3,4 +3,5 @@
 
 
 Packages:
-	rich 
+	rich (pip install rich): https://pypi.org/project/rich/
+	keyboard (pip install keyboard) : https://pypi.org/project/keyboard/
