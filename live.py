@@ -1,22 +1,46 @@
 import time
-from rich.live import Live
+from rich.console import Console
+from rich.layout import Layout
 from rich.table import Table
-from generator import *
-import random
+from rich.live import Live
+from rich import print
+from rich.panel import Panel
+from diffusion import Diffusion
+from Menu import Menu
+from Menu import MainMenu
+import keyboard
+def end():
+    keyboard.press("backspace")
+    global stop
+    stop = True
 
-table = Table()
 
-table.add_column("Row ID")
-table.add_column("Description")
-table.add_column("Level")
+"""
+with Live(menu, refresh_per_second=1) as live:
+    while True:
+        menu.display()
+        live.update(menu)
+        keyboard.wait()
+"""
 
-diff = generator(80,30,400)
 
-with Live(diff, refresh_per_second=4) as live:
-    while diff.finished() == False:
-        diff.diffusion()
-        live.update(diff.update())
-        time.sleep(.08)
+t = Live()
+c = Console()
 
-    diff.Tom.reset(80,30)
+mainMenu = MainMenu(["1. Diffusion", "2. Hulk", "3. Exit"])
+mainMenu.setStyle("red on black")
+keyboard.add_hotkey('down', mainMenu.down)
+keyboard.add_hotkey('up', mainMenu.up)
+keyboard.add_hotkey('3', end)
+
+
+
+
+stop = False
+with Live(mainMenu.layout,refresh_per_second=4) as live:
+    while stop == False:
+        mainMenu.updateMenu()
+        if mainMenu.maps["diffusion"].finished():
+            mainMenu.maps["diffusion"].restart()
+        time.sleep(.05)
 
