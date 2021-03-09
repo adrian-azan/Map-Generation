@@ -7,8 +7,8 @@ from rich import print
 from rich.panel import Panel
 from rich.text import Text
 from rich.align import Align
-from diffusion import Diffusion
 
+from Life import Life
 from diffusion import Diffusion
 import keyboard
 
@@ -60,16 +60,30 @@ class MainMenu(Menu):
             Layout(name='upper'),
             Layout(name='lower')
         )
+
         self.layout["lower"].update(self.menu)
 
-        self.populate()
 
         self.maps = dict()
         self.maps["diffusion"] = Diffusion(80,30, 300)
-        self.layout["upper"].update(self.maps["diffusion"])
+        self.maps["life"] = Life(140,30,5,80)
+
         self.layout["upper"].size = 35
+        self.populate()
+
+    def restart(self):
+        if self.selection == 0:
+            self.maps["diffusion"].restart()
+        if self.selection == 1:
+            self.maps["life"].restart()
 
     def updateMenu(self):
         self.layout["lower"].update(self.menu)
-        self.maps["diffusion"].diffusion()
-        self.layout["upper"].update(self.maps["diffusion"].update())
+        if self.selection == 0:
+            self.maps["diffusion"].diffusion()
+            self.layout["upper"].update(self.maps["diffusion"].update())
+            return self.maps["diffusion"].finished()
+        if self.selection == 1:
+            self.maps["life"].life()
+            self.layout["upper"].update(self.maps["life"].update())
+            return self.maps["life"].finished()

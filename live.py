@@ -39,8 +39,8 @@ keyboard.add_hotkey('3', end)
 stop = False
 with Live(mainMenu.layout,refresh_per_second=4) as live:
     while stop == False:
-        mainMenu.updateMenu()
-        if mainMenu.maps["diffusion"].finished():
-            mainMenu.maps["diffusion"].restart()
-        time.sleep(.05)
+
+        if mainMenu.updateMenu():
+            mainMenu.restart()
+        time.sleep(.5)
 

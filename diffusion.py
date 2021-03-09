@@ -12,9 +12,11 @@ class Diffusion(Generator):
         self.Tom.pos(self.width/2,self.height/2)
 
     def restart(self):
-        super().restart()
+        self.map = [[1 for j in range(self.width)] for i in range(self.height)]
+        self.space = 0
         self.Tom.reset()
         self.Tom.pos(self.width/2, self.height/2)
+
 
     def diffusion(self):
         change = False
@@ -43,6 +45,15 @@ class Diffusion(Generator):
                 self.Tom.reset()
 
 
+    def finished(self):
+        if self.space >= self.spaceGoal:
+            return True
+        return False
+
+    def update(self):
+        return super().updateSuper(["Space: {}/{}".format(self.space,self.spaceGoal),
+                     "Miner ID: {}".format(self.Tom.ID),
+                     "Endurance: {}/{}".format(self.Tom.endurance,self.Tom.maxEndurance)])
 
     def report(self):
         if (os.path.isdir("reports") == False):

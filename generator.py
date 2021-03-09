@@ -40,17 +40,12 @@ class Generator:
         self.space = 0
         self.spaceGoal = goal
 
-    def finished(self):
-        if self.space >= self.spaceGoal:
-            return True
-        return False
-
-    def restart(self):
-        self.map = [[1 for j in range(self.width)] for i in range(self.height)]
-        self.space = 0
 
 
-    def update(self):
+
+
+
+    def updateSuper(self,details):
         table = Table(box=box.SIMPLE)
         table.add_column("Map")
         table.add_column("Requirement")
@@ -62,12 +57,11 @@ class Generator:
                 elif self.map[row][col] == 0:
                     output += " "
 
-            if (row == 0):
-                table.add_row(output,"Space: {}/{}".format(self.space,self.spaceGoal))
-            elif row == 1:
-                table.add_row(output, "Miner ID: {}".format(self.Tom.ID))
-            elif row == 2:
-                table.add_row(output, "Endurance: {}/{}".format(self.Tom.endurance,self.Tom.maxEndurance))
+            if row < len(details):
+                for i in range(0,len(details)):
+                    if (row == i):
+                        table.add_row(output,details[i])
+
             else:
                 table.add_row(output,"")
 
